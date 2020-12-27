@@ -10,8 +10,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "npx nodemon --exec npx babel-node src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npm run build && nodemon src/server.js --exec babel-node",
+    "heroku-postbuild": "npm install",
+    "start": "nodemon src/server.js --exec babel-node"
   },
   "author": "",
   "license": "ISC"
