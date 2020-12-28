@@ -32,10 +32,10 @@ const withDB = async(operations, res)=>{
             useUnifiedTopology: true  
         });
 
-        const db = client.db('full-stack-site-db');
+        const db = mongoClient.db('full-stack-site-db');
 
         await operations(db);
-        client.close();
+        mongoClient.close();
     }catch(error){
         res.status(500).json({message:'Error connecting', error});
     }
