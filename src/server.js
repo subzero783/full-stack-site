@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
+import dotenv from 'dotenv';
+import {MongoClient} from 'mongodb';
 
 
 const articlesInfo = {
@@ -22,6 +24,30 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, '/build')));
 app.use(bodyParser.json());
+
+const withDB = async(operations, res)=>{
+    try{
+        const mongoClient = await MongoClient.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true  
+        });
+
+        const db = client.db('full-stack-site-db');
+
+        await operations(db);
+        client.close();
+    }catch(error){
+        res.status(500).json({message:'Error connecting', error});
+    }
+};
+
+app.get('/api/articles/:name', async (req, res)=>{
+    withDB(async (db)=>{
+        const articleName = req.params.name;
+        const articleInfo = await db.collection('articles').findOne({name:articleName});
+        res.status(200).json(articleInfo);
+    }, res);
+});
 
 
 app.post('/api/articles/:name/upvote', (req, res) => {
@@ -48,4 +74,4 @@ app.get('*', (req, res)=>{
 
 const server = app.listen(process.env.PORT || 8000, ()=>{
     console.log(`Listening on port ${server.address().port}`);
-  });
+});
