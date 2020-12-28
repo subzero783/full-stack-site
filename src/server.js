@@ -4,22 +4,6 @@ import path from 'path';
 import dotenv from 'dotenv';
 import {MongoClient} from 'mongodb';
 
-
-const articlesInfo = {
-    'learn-react': {
-        upvotes: 0,
-        comments: [],
-    },
-    'learn-node': {
-        upvotes: 0,
-        comments: [],
-    },
-    'my-thoughts-on-resumes': {
-        upvotes: 0,
-        comments: [],
-    },
-}
-
 const app = express();
 
 dotenv.config()
