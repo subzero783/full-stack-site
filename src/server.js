@@ -22,6 +22,8 @@ const articlesInfo = {
 
 const app = express();
 
+dotenv.config()
+
 app.use(express.static(path.join(__dirname, '/build')));
 app.use(bodyParser.json());
 
@@ -44,7 +46,7 @@ const withDB = async(operations, res)=>{
 app.get('/api/articles/:name', async (req, res)=>{
     withDB(async (db)=>{
         const articleName = req.params.name;
-        const articleInfo = await db.collection('articles').findOne({name:articleName});
+        const articleInfo = await db.collection('collection-01').findOne({name:articleName});
         res.status(200).json(articleInfo);
     }, res);
 });
